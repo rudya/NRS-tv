@@ -2,7 +2,7 @@
     "name": "NRS-tv",
     "version": "0.1",
     "description": "NBA Reddit Streams TV",
-    "permissions": ["activeTab","declarativeContent", "storage"],
+    "permissions": ["activeTab","declarativeContent", "storage", "https://www.reddit.com/r/nbastreams/*"],
     "background": {
       "scripts": ["background.js"],
       "persistent": false
