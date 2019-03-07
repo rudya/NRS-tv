@@ -29,6 +29,10 @@ let games = [
 			{
 				author:"buffstreams2",
 				links:["link1","link2"]
+			},
+			{
+				author:"buffstreams2",
+				links:["link1","link2"]
 			}
 		]
 	},
@@ -45,16 +49,35 @@ let games = [
 				links:["link1","link2"]
 			}
 		]
+	},
+	{
+		title:"lakers vs thunder",
+		url:"",
+		streams:[
+			{
+				author:"buffstremas",
+				links:["link1","link2"]
+			},
+			{
+				author:"buffstreams2",
+				links:["link1","link2"]
+			},
+			{
+				author:"buffstreams2",
+				links:["link1","link2"]
+			}
+		]
 	}
 ]
 
 let build = (games) => {
 	let mainContainer = document.getElementById("main-container")
 
+	// create div for each game
   games.forEach((game) => {
 
 		let gameDiv = document.createElement("div")
-		gameDiv.className = "game sm-marg-bot"
+		gameDiv.className = "game"
 
 		let title = document.createElement("div")
 		title.className = "game-title med sm-marg-bot"
@@ -63,7 +86,12 @@ let build = (games) => {
 		//appends
 		gameDiv.appendChild(title)
 		mainContainer.appendChild(gameDiv)
+		mainContainer.appendChild(document.createElement('hr'))
 
+		//add bg img
+		addImgs(gameDiv)
+
+		//create stream channel divs for each game
 		game.streams.forEach((stream) => {
 
 			let streamContainer = document.createElement("div")
@@ -92,6 +120,7 @@ let build = (games) => {
 
 			gameDiv.appendChild(streamContainer)
 
+			//create links for each stream channel div
 			stream.links.forEach((link) => {
 
 				links.innerHTML += link + " "
@@ -102,6 +131,15 @@ let build = (games) => {
 
 
   })
+}
+
+let addImgs = (gameDiv) => {
+		let imgContainer = document.createElement("div")
+		imgContainer.className = "img-container"
+		let img = document.createElement("img")
+		img.src = "images/teams/hawks.png"
+		imgContainer.appendChild(img)
+		gameDiv.append(imgContainer)
 }
 
 

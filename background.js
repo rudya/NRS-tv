@@ -5,16 +5,16 @@
 'use strict';
 
 const teams = [
-	{name:"Atlanta Hawks", color:""},
+	{name:"Atlanta Hawks", link:""},
 	{name:"Boston Celtics", color:""},
 	{name:"Brooklyn Nets", color:""},
-	{name:"Charlotte Bobcats", color:""},
+	{name:"Charlotte Hornets", color:""},
 	{name:"Chicago Bulls", color:""},
 	{name:"Cleveland Cavaliers", color:""},
 	{name:"Dallas Maveriks", color:""},
 	{name:"Denver Nuggets", color:""},
 	{name:"Detroit Pistons", color:""},
-	{name:"Golden State Warrios", color:""},
+	{name:"Golden State Warriors", color:""},
 	{name:"Houston Rockets", color:""},
 	{name:"Indiana Pacers", color:""},
 	{name:"Los Angeles Clippers", color:""},

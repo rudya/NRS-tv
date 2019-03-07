@@ -1,0 +1,108 @@
+*{
+	padding:0;
+	margin:0;
+
+}
+
+body, html{
+	width:366px;
+	height:auto;
+	line-height: 1.6em;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  transition: 1s;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: white; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.3); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.5); 
+}
+
+.sm{
+	font-size: 1em;
+}
+.med{
+	font-size: 1.6em;
+}
+.large{
+	font-size: 2.56em;
+}
+
+.sm-pad-x{
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+.sm-pad-bot{
+	padding-bottom: 0.5em;
+}
+
+.sm-marg-bot{
+	margin-bottom: 0.5em;
+}
+
+#header{
+	background-image: linear-gradient(to right, #1d428a, #375899);
+	color:white;
+	width: 99%;
+	margin-left: 0.5%;
+	border-radius: 2px;
+	display: grid;
+	grid-template-columns: 34px auto;
+
+}
+
+#header p{
+	padding: 0.375em;
+	padding-left: 0;
+	line-height: 26px;
+}
+
+#header img{
+	align-self: center;
+	justify-self: center;
+	height: 26px;
+	width: 26px;
+}
+
+#main-container{
+	padding: 0.375em;
+}
+
+.game{
+	border-radius: 5px;
+	padding: 1em;
+	position: relative;
+	overflow-y: hidden;
+}
+
+.stream{
+	background-color: rgba(0,0,0,0.1)
+}
+
+.img-container{
+	position: absolute;
+	opacity: 0.2;
+
+}
+
+.img-container img{
+	height: 166px;
+}
+
+.stream{
+	padding:0.375em;
+}
