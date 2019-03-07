@@ -44,57 +44,103 @@ chrome.runtime.onInstalled.addListener(function() {
     console.log("The color is green.");
   });
 
-
   //get nbaredditstreams json
-  let json = httpGet("https://www.reddit.com/r/nbastreams/hot.json")
-
-  //parse json
-  let data = JSON.parse(json).data
-
-  //get posts
-  let posts = data.children
-
-  //console.log(posts)
-  //get title and url for each post
-  posts.forEach((post)=>{
-
-  	/*if (post.data.link_flair_text === "Game Thread"){*/
-  	if(post.data.title === "Game Thread: Dallas Mavericks @ Brooklyn Nets (19:30 PM ET)"){
-	  	//console.log(post.data.title)
-	  	//console.log(post.data.url)
-	  	json = httpGet(post.data.url+'.json')
-
-	  	//get comments data
-	  	data = JSON.parse(json)
-	  	let comments = data[1].data.children
-
-	  	//shift to skip stickied post
-	  	comments.shift()
-	  	console.log(comments)
-
-	  	comments.forEach((comment) => {
-	  		if(comment.data.author !== "AutoModerator"){
-	  			console.log(comment.data.author)
-	  			console.log(comment.data.body)
-	  		}
-	  	})
-  	}
-
-  	/*
-  	scrap title for nba game
-		if nba game post
-			get post url
-			scrape post for stream links
-				skip post data and go to comments
-				skip "join discord" stickied comment, filter 
-				scrape stream links
-			store nba game match up and stream links
-			
-		*/
+  getRequest("https://www.reddit.com/r/nbastreams/hot.json")
+  .then(function(res){
+  	return getPosts(res)
   })
+  .then(function(res){
+  	console.log(res)
+  })
+  .catch((err)=>{
+  	console.log(err)
+  })
+
+
 
   
 });
+
+function getRequest(url){
+
+	return new Promise((resolve, reject)=>{
+
+		let xhr = new XMLHttpRequest();
+	 	xhr.addEventListener("load", () => {
+	 				if(xhr.status == 200){
+	 					resolve(xhr.response)
+	 				}
+	 				else{
+	 					reject('status code: ' + xhr.response)
+	 				}
+	    }, false);
+	  xhr.open("GET" ,url)
+	  xhr.send()
+	})
+}
+
+let getPosts = function(res){
+	
+	return new Promise((resolve, reject) => {
+
+		//parse json
+	  let data = JSON.parse(res).data.children
+
+	  let posts = []
+
+	  //get title and url for each post
+	  data.forEach((post)=>{
+
+	  	if (post.data.link_flair_text === "Game Thread"){
+		  	//console.log(post.data.title)
+		  	//console.log(post.data.url)
+		  	posts.push({
+		  		title:post.data.title,
+		  		url:post.data.url
+		  	})
+
+	/*	  	json = httpGet(post.data.url+'.json')
+
+		  	//get comments data
+		  	data = JSON.parse(json)
+		  	let comments = data[1].data.children
+
+		  	//shift to skip stickied post
+		  	comments.shift()
+		  	console.log(comments)
+
+		  	comments.forEach((comment) => {
+		  		if(comment.data.author !== "AutoModerator"){
+		  			console.log(comment.data.author)
+		  			console.log(comment.data.body)
+		  			//let regex = comment.data.body.match(/\((.*?)\)/g);
+		  			//console.log(regex)
+		  		}
+		  	})*/
+	  	}
+
+	  	/*
+	  	scrap title for nba game
+			if nba game post
+				get post url
+				scrape post for stream links
+					skip post data and go to comments
+					skip "join discord" stickied comment, filter 
+					scrape stream links
+				store nba game match up and stream links
+				
+			*/
+	  })
+
+	  console.log(posts.length)
+	  if (posts.length !== 0){
+	  	resolve(posts)
+	  }else{
+	  	reject('no games')
+	  }
+	})
+
+}
 
 function httpGet(theUrl){
   var xmlHttp = null;
