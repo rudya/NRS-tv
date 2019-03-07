@@ -46,45 +46,52 @@ chrome.runtime.onInstalled.addListener(function() {
 
   //get nbaredditstreams json
   getRequest("https://www.reddit.com/r/nbastreams/hot.json")
-  .then(function(res){
-  	return getPosts(res)
+  .then(json => {
+
+  	//get Game Thread Posts
+  	return getPosts(json)
   })
-  .then(function(res){
-  	console.log(res)
+  .then(posts => {
+
+  	//scape comments
+		return scrapeComments(posts)
   })
-  .catch((err)=>{
+  .then(posts => {
+  	console.log(posts)
+  })
+  .catch(err => {
   	console.log(err)
   })
-
-
 
   
 });
 
-function getRequest(url){
+//returns json parsed response
+let getRequest = (url) => {
 
 	return new Promise((resolve, reject)=>{
 
 		let xhr = new XMLHttpRequest();
 	 	xhr.addEventListener("load", () => {
 	 				if(xhr.status == 200){
-	 					resolve(xhr.response)
+	 					resolve(JSON.parse(xhr.response))
 	 				}
 	 				else{
 	 					reject('status code: ' + xhr.response)
 	 				}
 	    }, false);
-	  xhr.open("GET" ,url)
+	  xhr.open("GET", url)
 	  xhr.send()
 	})
 }
 
-let getPosts = function(res){
+// returns array of posts
+let getPosts = (json) => {
 	
 	return new Promise((resolve, reject) => {
 
 		//parse json
-	  let data = JSON.parse(res).data.children
+	  let data = json.data.children
 
 	  let posts = []
 
@@ -92,68 +99,80 @@ let getPosts = function(res){
 	  data.forEach((post)=>{
 
 	  	if (post.data.link_flair_text === "Game Thread"){
-		  	//console.log(post.data.title)
-		  	//console.log(post.data.url)
 		  	posts.push({
 		  		title:post.data.title,
 		  		url:post.data.url
 		  	})
-
-	/*	  	json = httpGet(post.data.url+'.json')
-
-		  	//get comments data
-		  	data = JSON.parse(json)
-		  	let comments = data[1].data.children
-
-		  	//shift to skip stickied post
-		  	comments.shift()
-		  	console.log(comments)
-
-		  	comments.forEach((comment) => {
-		  		if(comment.data.author !== "AutoModerator"){
-		  			console.log(comment.data.author)
-		  			console.log(comment.data.body)
-		  			//let regex = comment.data.body.match(/\((.*?)\)/g);
-		  			//console.log(regex)
-		  		}
-		  	})*/
 	  	}
-
-	  	/*
-	  	scrap title for nba game
-			if nba game post
-				get post url
-				scrape post for stream links
-					skip post data and go to comments
-					skip "join discord" stickied comment, filter 
-					scrape stream links
-				store nba game match up and stream links
-				
-			*/
 	  })
 
-	  console.log(posts.length)
 	  if (posts.length !== 0){
 	  	resolve(posts)
 	  }else{
 	  	reject('no games')
 	  }
 	})
+}
+
+
+let scrapeComments = (posts) => {
+
+	return new Promise((resolve) => {
+
+		let games = posts.map((post) => {
+
+			return new Promise((resolve) => {
+				getRequest(post.url + '.json')
+				.then(json => {
+					let commentsArray = parseCommentData(json, post)
+					post.comments = commentsArray
+					resolve( 
+						post
+					 ) 
+				})
+			})
+
+		})
+
+		Promise.all(games).then(() => {
+			resolve(posts)
+		})
+
+	})
 
 }
 
-function httpGet(theUrl){
-  var xmlHttp = null;
+// returns comments as array of objects 
+/*
+	[
+		{
+			author:"",
+			links:[]
+		}
+	]
+*/
+let parseCommentData = (json, post) => {
 
-  xmlHttp = new XMLHttpRequest();
-  xmlHttp.open("GET", theUrl,false)
-  xmlHttp.onreadystatechange=function()
-  {
-      if (xmlHttp.readyState==4 && xmlHttp.status==200)
-      {
-          return xmlHttp.responseText;
-      }
-  }
-  xmlHttp.send( null );
-  return xmlHttp.responseText;
+	let commentsArray = []
+
+	//get comments data
+	let comments = json[1].data.children
+
+			//shift to skip stickied post
+	  	comments.shift()
+	  	comments.forEach((comment) => {
+
+	  		if(comment.data.author !== "AutoModerator"){
+
+	  			let regex = comment.data.body.match(/\(+(http)(.*?)\)/g);
+	  			commentsArray.push({
+	  				author:comment.data.author,
+	  				links:regex
+	  			})
+	  		}
+	  	})
+
+	  	return commentsArray
+
 }
+
