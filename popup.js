@@ -136,9 +136,13 @@ let build = (games) => {
 let addImgs = (gameDiv) => {
 		let imgContainer = document.createElement("div")
 		imgContainer.className = "img-container"
-		let img = document.createElement("img")
-		img.src = "images/teams/hawks.png"
-		imgContainer.appendChild(img)
+		let img1 = document.createElement("img")
+		img1.src = "images/teams/jazz.png"
+		let img2 = document.createElement("img")
+		img2.className="img2"
+		img2.src = "images/teams/jazz.png"
+		imgContainer.appendChild(img1)
+		imgContainer.appendChild(img2)
 		gameDiv.append(imgContainer)
 }
 

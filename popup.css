@@ -100,7 +100,11 @@ body, html{
 }
 
 .img-container img{
-	height: 166px;
+	width: 166px;
+}
+
+.img-container img2{
+
 }
 
 .stream{
