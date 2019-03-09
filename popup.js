@@ -4,11 +4,14 @@
 
 'use strict';
 
+let preload = document.getElementById('preload')
+
 document.addEventListener("DOMContentLoaded", function() {
 	//build(games)
   getGames()
   .then(posts => {
   	console.log(posts)
+  	preload.style.setProperty('display', 'none')
   	build(posts)
   })
   .catch((err) => {
