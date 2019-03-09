@@ -5,6 +5,9 @@
 'use strict';
 
 let preload = document.getElementById('preload')
+let noGames = document.getElementById('no-games')
+let mainContainer = document.getElementById("main-container")
+
 
 document.addEventListener("DOMContentLoaded", function() {
 	//build(games)
@@ -12,10 +15,13 @@ document.addEventListener("DOMContentLoaded", function() {
   .then(posts => {
   	console.log(posts)
   	preload.style.setProperty('display', 'none')
+  	mainContainer.style.setProperty('display', 'block')
   	build(posts)
   })
   .catch((err) => {
   	//no games or get request error
+  	preload.style.setProperty('display', 'none')
+  	noGames.style.setProperty('display', 'flex')
   	console.log(err)
   })
 });
@@ -70,16 +76,49 @@ let games = [
 				links:["link1","link2"]
 			}
 		]
+	},
+		{
+		title:"Los Angeles Lakers vs Oklahoma City Thunder",
+		url:"",
+		streams:[
+			{
+				author:"buffstremas",
+				links:["link1","link2"]
+			},
+			{
+				author:"buffstreams2",
+				links:["link1","link2"]
+			},
+			{
+				author:"buffstreams2",
+				links:["link1","link2"]
+			}
+		]
+	},
+	{
+		title:"Miami Heat vs Utah Jazz",
+		url:"",
+		streams:[
+			{
+				author:"buffstremas",
+				links:["link1","link2"]
+			},
+			{
+				author:"buffstreams2",
+				links:["link1","link2"]
+			}
+		]
 	}
 ]
 
 let build = (games) => {
-	let mainContainer = document.getElementById("main-container")
+	let matchupsContainer = document.getElementById("matchups-container")
 
 	// create div for each game
-  games.forEach((game) => {
+  games.forEach((game,index) => {
 
 		let gameDiv = document.createElement("div")
+		gameDiv.id = "matchup" + index;
 		gameDiv.className = "game"
 
 		let title = document.createElement("div")
@@ -88,11 +127,11 @@ let build = (games) => {
 
 		//appends
 		gameDiv.appendChild(title)
-		mainContainer.appendChild(gameDiv)
 		mainContainer.appendChild(document.createElement('hr'))
+		mainContainer.appendChild(gameDiv)
 
 		//add bg img
-		addImgs(gameDiv, game.title)
+		addImgs(matchupsContainer, game.title, index)
 
 		if (game !== null){
 			
@@ -132,7 +171,7 @@ let build = (games) => {
 						let linkTag = document.createElement('a')
 						linkTag.href = link
 						linkTag.target="_blank"
-						linkTag.innerHTML = index+ 1 
+						linkTag.innerHTML = 'link' + (index + 1) 
 						links.appendChild(linkTag)
 
 					})
@@ -162,7 +201,7 @@ let determineTeams = (string) => {
 	return [logos[0].link, logos[1].link]
 }
 
-let addImgs = (gameDiv, title) => {
+let addImgs = (matchupsContainer, title, index) => {
 
 	let logos = determineTeams(title)
 
@@ -174,8 +213,11 @@ let addImgs = (gameDiv, title) => {
 	img2.className="img2"
 	img2.src = logos[1]
 	imgContainer.appendChild(img1)
+	imgContainer.appendChild(document.createTextNode(" @ "))
 	imgContainer.appendChild(img2)
-	gameDiv.append(imgContainer)
+
+	let anchor = 'matchup' + 'index'
+	matchupsContainer.append(imgContainer)
 }
 
 
@@ -244,6 +286,7 @@ let getPosts = (json) => {
 		  	})
 	  	}
 	  })
+
 
 	  if (posts.length !== 0){
 	  	resolve(posts)
