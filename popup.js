@@ -5,21 +5,21 @@
 'use strict';
 
 document.addEventListener("DOMContentLoaded", function() {
-	build(games)
-/*  getGames()
+	//build(games)
+  getGames()
   .then(posts => {
   	console.log(posts)
-  	build()
+  	build(posts)
   })
   .catch((err) => {
   	//no games or get request error
   	console.log(err)
-  })*/
+  })
 });
 
 let games = [
 	{
-		title:"warriors vs rockets",
+		title:"Golden State Warriors @ Houston Rockets",
 		url:"",
 		streams:[
 			{
@@ -37,7 +37,7 @@ let games = [
 		]
 	},
 	{
-		title:"heat vs jazz",
+		title:"Miami Heat vs Utah Jazz",
 		url:"",
 		streams:[
 			{
@@ -51,7 +51,7 @@ let games = [
 		]
 	},
 	{
-		title:"lakers vs thunder",
+		title:"Los Angeles Lakers vs Oklahoma City Thunder",
 		url:"",
 		streams:[
 			{
@@ -89,61 +89,90 @@ let build = (games) => {
 		mainContainer.appendChild(document.createElement('hr'))
 
 		//add bg img
-		addImgs(gameDiv)
+		addImgs(gameDiv, game.title)
 
-		//create stream channel divs for each game
-		game.streams.forEach((stream) => {
+		if (game !== null){
+			
+			//create stream channel divs for each game
+			game.streams.forEach((stream) => {
 
-			let streamContainer = document.createElement("div")
-			streamContainer.className = "stream-container"
+				let streamContainer = document.createElement("div")
+				streamContainer.className = "stream-container"
 
-			let streamDiv = document.createElement("div")
-			streamDiv.className = "stream sm-marg-bot"
+				let streamDiv = document.createElement("div")
+				streamDiv.className = "stream sm-marg-bot"
 
-			let author = document.createElement("div")
-			author.className = "stream-author"
-			author.innerHTML = stream.author
+				let author = document.createElement("div")
+				author.className = "stream-author"
+				author.innerHTML = stream.author
 
-			let linksContainer = document.createElement("div")
-			linksContainer.className = "links-container"
+				let linksContainer = document.createElement("div")
+				linksContainer.className = "links-container"
 
-			let links = document.createElement("div")
-			links.className = "links"
+				let links = document.createElement("div")
+				links.className = "links"
 
-			//appends
-			linksContainer.appendChild(links)
+				//appends
+				linksContainer.appendChild(links)
 
-			streamDiv.appendChild(author)
-			streamDiv.appendChild(linksContainer)
+				streamDiv.appendChild(author)
+				streamDiv.appendChild(linksContainer)
 
-			streamContainer.appendChild(streamDiv)
+				streamContainer.appendChild(streamDiv)
 
-			gameDiv.appendChild(streamContainer)
+				gameDiv.appendChild(streamContainer)
 
-			//create links for each stream channel div
-			stream.links.forEach((link) => {
+				if (stream.links !== null){
 
-				links.innerHTML += link + " "
+					//create links for each stream channel div
+					stream.links.forEach((link, index) => {
+						let linkTag = document.createElement('a')
+						linkTag.href = link
+						linkTag.target="_blank"
+						linkTag.innerHTML = index+ 1 
+						links.appendChild(linkTag)
+
+					})
+				}
 
 			})
+		} 
 
-		})
 
 
   })
 }
 
-let addImgs = (gameDiv) => {
-		let imgContainer = document.createElement("div")
-		imgContainer.className = "img-container"
-		let img1 = document.createElement("img")
-		img1.src = "images/teams/jazz.png"
-		let img2 = document.createElement("img")
-		img2.className="img2"
-		img2.src = "images/teams/jazz.png"
-		imgContainer.appendChild(img1)
-		imgContainer.appendChild(img2)
-		gameDiv.append(imgContainer)
+let determineTeams = (string) => {
+	let logos = []
+	teams.forEach((team) => {
+		let index = string.search(team.name)
+		if (index !== -1){
+			logos.push({link:team.link, index:index})
+		}
+	})
+
+	logos.sort((a,b) => {
+		return a.index - b.index;
+	})
+
+	return [logos[0].link, logos[1].link]
+}
+
+let addImgs = (gameDiv, title) => {
+
+	let logos = determineTeams(title)
+
+	let imgContainer = document.createElement("div")
+	imgContainer.className = "img-container"
+	let img1 = document.createElement("img")
+	img1.src = logos[0]
+	let img2 = document.createElement("img")
+	img2.className="img2"
+	img2.src = logos[1]
+	imgContainer.appendChild(img1)
+	imgContainer.appendChild(img2)
+	gameDiv.append(imgContainer)
 }
 
 
@@ -272,6 +301,18 @@ let parseCommentData = (json, post) => {
 	  		if(comment.data.author !== "AutoModerator"){
 
 	  			let regex = comment.data.body.match(/\(+(http)(.*?)\)/g);
+
+	  			//remove parentheses
+	  			if (regex !== null){
+
+		  			let newRegex=regex.map((link)=>{
+		  				let noParenthesesLink = link.slice(1,-1)
+		  				return noParenthesesLink
+		  			})
+
+		  			regex = newRegex
+	  			}
+
 	  			commentsArray.push({
 	  				author:comment.data.author,
 	  				links:regex
@@ -282,3 +323,36 @@ let parseCommentData = (json, post) => {
 	  	return commentsArray
 
 }
+
+const teams = [
+	{name:"Atlanta Hawks", link:"images/teams/hawks.png"},
+	{name:"Boston Celtics", link:"images/teams/celtics.png"},
+	{name:"Brooklyn Nets", link:"images/teams/nets.png"},
+	{name:"Charlotte Hornets", link:"images/teams/hornets.png"},
+	{name:"Chicago Bulls", link:"images/teams/bulls.png"},
+	{name:"Cleveland Cavaliers", link:"images/teams/cavaliers.png"},
+	{name:"Dallas Mavericks", link:"images/teams/mavericks.png"},
+	{name:"Denver Nuggets", link:"images/teams/nuggets.png"},
+	{name:"Detroit Pistons", link:"images/teams/pistons.png"},
+	{name:"Golden State Warriors", link:"images/teams/warriors.png"},
+	{name:"Houston Rockets", link:"images/teams/rockets.png"},
+	{name:"Indiana Pacers", link:"images/teams/pacers.png"},
+	{name:"Los Angeles Clippers", link:"images/teams/clippers.png"},
+	{name:"Los Angeles Lakers", link:"images/teams/lakers.png"},
+	{name:"New York Knicks", link:"images/teams/knicks.png"},
+	{name:"Memphis Grizzlies", link:"images/teams/grizzlies.png"},
+	{name:"Miami Heat", link:"images/teams/heat.png"},
+	{name:"Milwaukee Bucks", link:"images/teams/bucks.png"},
+	{name:"Minnesota Timberwolves", link:"images/teams/timberwolves.png"},
+	{name:"New York Knicks", link:"images/teams/knicks.png"},
+	{name:"New Orleans Pelicans", link:"images/teams/pelicans.png"},
+	{name:"Oklahoma City Thunder", link:"images/teams/thunder.png"},
+	{name:"Orlando Magic", link:"images/teams/magic.png"},
+	{name:"Philadelphia 76ers", link:"images/teams/76ers.png"},
+	{name:"Phoenix Suns", link:"images/teams/suns.png"},
+	{name:"Portland Trail Blazers", link:"images/teams/trialblazers.png"},
+	{name:"San Antonio Spurs", link:"images/teams/spurs.png"},
+	{name:"Toronto Raptors", link:"images/teams/raptors.png"},
+	{name:"Utah Jazz", link:"images/teams/jazz.png"},
+	{name:"Washington Wizards", link:"images/teams/wizards.png"},
+]

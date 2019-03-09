@@ -60,14 +60,11 @@ body, html{
 	width: 99%;
 	margin-left: 0.5%;
 	border-radius: 2px;
-	display: grid;
-	grid-template-columns: 34px auto;
 
 }
 
 #header p{
 	padding: 0.375em;
-	padding-left: 0;
 	line-height: 26px;
 }
 
@@ -90,17 +87,24 @@ body, html{
 }
 
 .stream{
-	background-color: rgba(0,0,0,0.1)
+	background-color: rgba(0,0,0,0.1);
+	display:flex;
+}
+
+.stream a {
+	margin-left: .625em;
 }
 
 .img-container{
 	position: absolute;
-	opacity: 0.2;
+	opacity: 0.3;
+	z-index: -1;
 
 }
 
 .img-container img{
 	width: 166px;
+	height: 166px;
 }
 
 .img-container img2{
