@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	//build(games)
   getGames()
   .then(posts => {
-  	console.log(posts)
+  	//console.log(posts)
   	preload.style.setProperty('display', 'none')
   	mainContainer.style.setProperty('display', 'block')
   	build(posts)
