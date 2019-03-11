@@ -4,6 +4,6 @@
 
 https://chrome.google.com/webstore/detail/nba-reddit-streams/npkbmplfkagffgjgohfofpdcabgbpijd/related
 
-r/nba stream shortcuts
+r/nbastream shortcuts
 
 2 clicks away from tuning into your favorite nba stream
