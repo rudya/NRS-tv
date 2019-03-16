@@ -228,7 +228,6 @@ let getGames = () => {
 		//get nbaredditstreams json
 	  getRequest("https://www.reddit.com/r/nbastreams/hot.json")
 	  .then(json => {
-
 	  	//get Game Thread Posts
 	  	return getPosts(json)
 	  })
@@ -286,7 +285,6 @@ let getPosts = (json) => {
 		  	})
 	  	}
 	  })
-
 
 	  if (posts.length !== 0){
 	  	resolve(posts)
@@ -397,6 +395,7 @@ const teams = [
 	{name:"Philadelphia 76ers", link:"images/teams/76ers.png"},
 	{name:"Phoenix Suns", link:"images/teams/suns.png"},
 	{name:"Portland Trail Blazers", link:"images/teams/trialblazers.png"},
+	{name:"Sacramento Kings", link:"images/teams/kings.png"},
 	{name:"San Antonio Spurs", link:"images/teams/spurs.png"},
 	{name:"Toronto Raptors", link:"images/teams/raptors.png"},
 	{name:"Utah Jazz", link:"images/teams/jazz.png"},
