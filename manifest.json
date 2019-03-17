@@ -1,7 +1,7 @@
   {
     "name": "NBA Reddit Streams",
-    "version": "1.0.1",
-    "description": "r/nbastreams shortcut. 2-clicks away from your favorite nba stream.",
+    "version": "1.0.2",
+    "description": "NBA Reddit Streams. r/nbastreams shortcut. 2-clicks away from your favorite nba stream.",
     "permissions": ["activeTab","declarativeContent", "storage", "https://www.reddit.com/r/nbastreams/*"],
     "background": {
       "scripts": ["background.js"],

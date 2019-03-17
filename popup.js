@@ -394,7 +394,7 @@ const teams = [
 	{name:"Orlando Magic", link:"images/teams/magic.png"},
 	{name:"Philadelphia 76ers", link:"images/teams/76ers.png"},
 	{name:"Phoenix Suns", link:"images/teams/suns.png"},
-	{name:"Portland Trail Blazers", link:"images/teams/trialblazers.png"},
+	{name:"Portland Trail Blazers", link:"images/teams/trailblazers.png"},
 	{name:"Sacramento Kings", link:"images/teams/kings.png"},
 	{name:"San Antonio Spurs", link:"images/teams/spurs.png"},
 	{name:"Toronto Raptors", link:"images/teams/raptors.png"},
